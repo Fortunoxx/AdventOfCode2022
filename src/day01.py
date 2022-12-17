@@ -10,6 +10,7 @@ def get_values(fileInfo):
                 sum = 0
             else:
                 sum += int(line)
+        sums.append(sum)
     return sums
 
 
