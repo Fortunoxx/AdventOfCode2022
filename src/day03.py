@@ -38,7 +38,7 @@ def get_groups(fileInfo, groupCount = 3):
             line = line.replace("\n", "")
             group.append(line)
             counter += 1
-            if counter >= 3: 
+            if counter >= groupCount: 
                 groups.append(group)
                 group = []
                 counter = 0
