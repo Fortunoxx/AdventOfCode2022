@@ -1,8 +1,8 @@
 import pytest
 
-from src.day03 import solve_part1, solve_part2
+from src.day04 import solve_part1, solve_part2
 
-day = "03"
+day = "04"
 
 @pytest.mark.parametrize("day", [day])
 def test_part1(day, expected_value = 2): 
@@ -10,6 +10,6 @@ def test_part1(day, expected_value = 2):
     assert solve_part1(testdata) == expected_value
 
 @pytest.mark.parametrize("day", [day])
-def test_part2(day, expected_value = 70): 
+def test_part2(day, expected_value = 4): 
     testdata = {"key": "sample", "file": f"test/data/day{day}.sample.dat"}
     assert solve_part2(testdata) == expected_value
