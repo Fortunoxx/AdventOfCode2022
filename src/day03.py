@@ -28,6 +28,31 @@ def convert_values(values):
     return ret
 
 
+def get_groups(fileInfo, groupCount = 3):
+    counter = 0
+    groups = []
+    group = []
+
+    with open(fileInfo["file"]) as file:
+        for line in file:
+            line = line.replace("\n", "")
+            group.append(line)
+            counter += 1
+            if counter >= 3: 
+                groups.append(group)
+                group = []
+                counter = 0
+
+    return groups
+
+def get_same_character_in_all_entries(groups):
+    first = groups[0]
+
+    for char in first:
+        if char in groups[1] and char in groups[2]:
+            return char
+
+
 def solve_part1(fileInfo):
     values = get_values(fileInfo)
     converted = convert_values(values)
@@ -37,4 +62,14 @@ def solve_part1(fileInfo):
 
 
 def solve_part2(fileInfo):
-    return 0
+    groups = get_groups(fileInfo)
+    values = []
+
+    for group in groups:
+        char = get_same_character_in_all_entries(group)
+        values.append(char)
+
+    converted = convert_values(values)
+    result = sum(converted)
+
+    return result
