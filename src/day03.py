@@ -1,18 +1,16 @@
-def get_values(fileInfo, is_part_2=False):
+def get_values(fileInfo):
     values = []
 
     with open(fileInfo["file"]) as file:
         for line in file:
             line = line.replace("\n", "")
-            if line != "\n":
-                mid = int(len(line) / 2)
-                part1 = line[:mid]
-                part2 = line[mid:]
-                for ele1 in part1:
-                    # for ele2 in part2:
-                    if ele1 in part2:
-                        values.append(ele1)
-                        break
+            mid = int(len(line) / 2)
+            part1 = line[:mid]
+            part2 = line[mid:]
+            for ele1 in part1:
+                if ele1 in part2:
+                    values.append(ele1)
+                    break
 
     return values
 
