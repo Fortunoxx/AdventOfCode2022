@@ -25,6 +25,5 @@ def solve_part1(fileInfo):
 
 
 def solve_part2(fileInfo):
-    values = get_values(fileInfo)
-
-    return 0
+    line = get_values(fileInfo)
+    return get_index_of_first_different_packet(line, 14)
