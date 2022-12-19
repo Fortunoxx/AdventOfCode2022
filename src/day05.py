@@ -64,7 +64,19 @@ def split_crates(line, delimiter=" "):
 def move_crates(stacks, instructions):
     for i in instructions:
         for c in range(i["count"]):
-            stacks[i["dest"]-1].append(stacks[i["src"]-1].pop())
+            stacks[i["dest"] - 1].append(stacks[i["src"] - 1].pop())
+
+    return stacks
+
+
+def move_crates_9001(stacks, instructions):
+    for i in instructions:
+        temp = []
+        for _ in range(i["count"]):
+            temp.append(stacks[i["src"] - 1].pop())
+        temp.reverse()
+        for item in temp:
+            stacks[i["dest"] - 1].append(item)
 
     return stacks
 
@@ -80,6 +92,10 @@ def solve_part1(fileInfo):
 
 
 def solve_part2(fileInfo):
-    values = get_values(fileInfo)
+    (stacks, instructions) = get_values(fileInfo)
+    stacks = move_crates_9001(stacks, instructions)
+    result = ""
+    for s in stacks:
+        result += s.pop()
 
-    return 0
+    return result
