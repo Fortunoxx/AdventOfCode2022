@@ -44,14 +44,38 @@ def calc_sizes(directory_structure):
     return sub
 
 
-def get_directories_by_size(directories, result = [], max_size = 100000):
+def get_directories_by_size(directories, max_size = 100000, result = []):
     for dir in directories["directories"]:
         if dir["size"] <= max_size:
             result.append(dir)
         if len(dir["directories"]) > 0:
-            get_directories_by_size(dir, result)
+            get_directories_by_size(dir, max_size, result)
 
     return result
+
+
+def get_directories_by_min_size(directories, min_size, result = []):
+    for dir in directories["directories"]:
+        if dir["size"] >= min_size:
+            result.append(dir)
+        if len(dir["directories"]) > 0:
+            get_directories_by_min_size(dir, min_size, result)
+
+    return result
+
+
+def delete_directories_for_update(directories, max_space = 70000000, space_needed = 30000000):
+    total_space_used = directories["size"]
+    space_left = max_space - total_space_used
+    space_to_be_deleted = space_needed - space_left
+
+    results = get_directories_by_min_size(directories, space_to_be_deleted)
+    smallest_item = {}
+    for item in results:
+        if smallest_item == {} or item["size"] < smallest_item["size"]:
+            smallest_item = item
+
+    return smallest_item
 
 
 def solve_part1(fileInfo):
@@ -65,6 +89,8 @@ def solve_part1(fileInfo):
 
 
 def solve_part2(fileInfo):
-    values = get_values(fileInfo)
+    directory_structure = get_values(fileInfo)
+    calc_sizes(directory_structure)
+    result = delete_directories_for_update(directory_structure)["size"]
 
-    return 0
+    return result
