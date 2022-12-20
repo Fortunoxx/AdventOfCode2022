@@ -36,7 +36,7 @@ def find_visible_trees_in_line(values, results):
     iterate(values, results)
 
 
-def find_visible_trees(values, x, y):
+def calc_horizontal_and_vertical(values, x, y):
     horizontal = []
     vertical = []
 
@@ -54,6 +54,12 @@ def find_visible_trees(values, x, y):
         else:
             vertical[val["id"] % x].append(val)
 
+    return (horizontal, vertical)
+
+
+def find_visible_trees(values, x, y):
+    (horizontal, vertical) = calc_horizontal_and_vertical(values, x, y)
+
     results = []
     for arr in horizontal:
         find_visible_trees_in_line(arr, results)
@@ -61,6 +67,54 @@ def find_visible_trees(values, x, y):
         find_visible_trees_in_line(arr, results)
 
     return len(results)
+
+
+def count_visibility(value, array, invers = False):
+    id = value["id"]
+    height = value["height"]
+    counter = 0
+
+    if invers: 
+        array.reverse()
+    
+    for item in array:
+        if not invers and item["id"] > id:
+            counter += 1
+            if item["height"] >= height:
+                break
+        elif invers and item["id"] < id:
+            counter += 1
+            if item["height"] >= height:
+                break
+
+    return counter
+
+
+def count_visibility_range(values, x, y):
+    max_view = 0
+    max_item = {} # out of curiosity: which item is it?
+
+    (horizontal, vertical) = calc_horizontal_and_vertical(values, x, y)
+
+    for val in values:
+        current_view = 1
+
+        h_idx = int(val["id"] / x)
+        v_idx = val["id"] % x
+
+        h_arr = horizontal[h_idx][:]
+        v_arr = vertical[v_idx][:]
+
+        current_view *= count_visibility(val, h_arr)
+        current_view *= count_visibility(val, h_arr, True)
+        current_view *= count_visibility(val, v_arr)
+        current_view *= count_visibility(val, v_arr, True)
+        
+        if current_view > max_view:
+            max_view = current_view
+            max_item = val
+
+    return (max_view, max_item)
 
 
 def solve_part1(fileInfo):
@@ -71,6 +125,7 @@ def solve_part1(fileInfo):
 
 
 def solve_part2(fileInfo):
-    values = get_values(fileInfo)
+    (values, x, y) = get_values(fileInfo)
+    (count, _) = count_visibility_range(values, x, y)
 
-    return 0
+    return count
