@@ -1,91 +1,71 @@
 def get_values(fileInfo):
-    horizontal_values = []
-    vertical_values = []
+    values = []
+    y = 0
+    x = 0
+    id = 0
 
     with open(fileInfo["file"]) as file:
         for line in file:
             line = line.replace("\n", "")
-            temp = []
+            y += 1
+
+            if y == 1:
+                x = len(line)
+
             for char in line:
-                temp.append(int(char))
-            horizontal_values.append(temp)
+                values.append({"id": id, "height": int(char)})
+                id += 1
 
-    is_first = True
-    for arr in horizontal_values:
-        idx = 0
-        for a in arr:
-            if is_first:
-                vertical_values.append([a])
-            else:
-                vertical_values[idx].append(a)
-            idx += 1
-
-        if is_first:
-            is_first = False
-
-    return (horizontal_values, vertical_values)
+    return (values, x, y)
 
 
-def iterate(values):
-    counter = 0
-    current_max = 0
-    idx = 0
+def iterate(values, results):
+    current_max = -1
+
     for val in values:
-        if current_max > 0 and idx < (len(values)-1):
-            if val > current_max:
-                counter += 1
-                current_max = val
-        else:
-            current_max = val
-        idx += 1
+        if val["height"] > current_max:
+            current_max = val["height"]
 
-    # previous = []
-
-    # for val in values:
-    #     visible = True
-    #     if len(previous) > 0 and len(previous) < (max_length - 1):
-    #         for p in previous:
-    #             if p >= val:
-    #                 visible = False
-    #         if visible:
-    #             counter += 1
-    #     previous.append(val)
-
-    return counter # 1832 too high
+            if not val["id"] in results:
+                results.append(val["id"])
 
 
-def find_visible_trees_in_line(values):
-    counter = iterate(values)
+def find_visible_trees_in_line(values, results):
+    iterate(values, results)
     values.reverse()
-    counter += iterate(values)
-
-    return counter
+    iterate(values, results)
 
 
-def find_visible_trees(horizontal_values, vertical_values):
-    counter = 0
-    for i in range(len(horizontal_values)):
-        arr = horizontal_values[i]
-        if i == 0 or i == (len(horizontal_values) - 1):  # add all outmost from horizontal
-            counter += len(arr)
+def find_visible_trees(values, x, y):
+    horizontal = []
+    vertical = []
+
+    # make horizontal and vertical arrays
+    for val in values:
+        if val["id"] % x > 0:
+            horizontal[int(val["id"] / x)].append(val)
         else:
-            counter += find_visible_trees_in_line(arr)
+            new = [val]
+            horizontal.append(new)
 
-    for i in range(len(vertical_values)):
-        arr = vertical_values[i]
-        if i == 0 or i == (len(vertical_values) - 1):  # add all outmost from vertical
-            counter += (
-                len(arr) - 2
-            )  # remove edge cases that were already part of horizontal
+        if int(val["id"] / x) == 0:
+            new = [val]
+            vertical.append(new)
         else:
-            counter += find_visible_trees_in_line(arr)
+            vertical[val["id"] % x].append(val)
 
-    return counter
+    results = []
+    for arr in horizontal:
+        find_visible_trees_in_line(arr, results)
+    for arr in vertical:
+        find_visible_trees_in_line(arr, results)
+
+    return len(results)
 
 
 def solve_part1(fileInfo):
-    (horizontal_values, vertical_values) = get_values(fileInfo)
-    result = find_visible_trees(horizontal_values, vertical_values)
+    (values, x, y) = get_values(fileInfo)
+    result = find_visible_trees(values, x, y)
 
     return result
 

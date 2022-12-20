@@ -27,8 +27,8 @@ sys.path.append('src/puzzle')
 import puzzle
 
 def getFileInfo(day, key="input"):
-    # return {"key": key, "file": f"src/data/day{day}.input.dat"}
-    return {"key": key, "file": f"test/data/day{day}.sample.dat"}
+    return {"key": key, "file": f"src/data/day{day}.input.dat"}
+    # return {"key": key, "file": f"test/data/day{day}.sample.dat"}
 
 # use beautiful colors
 W  = '\033[0m'  # white (normal)
