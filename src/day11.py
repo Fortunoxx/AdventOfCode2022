@@ -5,30 +5,44 @@ def get_values(fileInfo):
         for line in file:
             line = line.replace("\n", "")
             if line.startswith("Monkey "):
-                monkey = {"id": int(line.split(" ")[1].removesuffix(":")), "inspected": 0}
+                monkey = {
+                    "id": int(line.split(" ")[1].removesuffix(":")),
+                    "inspected": 0,
+                }
                 values.append(monkey)
             elif line.startswith("  Starting items: "):
-                items = list(map(lambda x: int(x), line.removeprefix("  Starting items: ").split(", ")))
-                items.reverse() # we want to use a stack
+                items = list(
+                    map(
+                        lambda x: int(x),
+                        line.removeprefix("  Starting items: ").split(", "),
+                    )
+                )
+                items.reverse()  # we want to use a stack
                 monkey["items"] = items
             elif line.startswith("  Operation: "):
                 sanitized = line.removeprefix("  Operation: new = old ")
                 parts = sanitized.split(" ")
                 if sanitized == "* old":
                     monkey["op"] = {"type": "square"}
-                else: 
+                else:
                     monkey["op"] = {"type": parts[0], "number": int(parts[1])}
             elif line.startswith("  Test: divisible by "):
-                monkey["test"] = {"mod": int(line.removeprefix("  Test: divisible by "))}
+                monkey["test"] = {
+                    "mod": int(line.removeprefix("  Test: divisible by "))
+                }
             elif line.startswith("    If true: throw to monkey "):
-                monkey["test"]["true"] = int(line.removeprefix("    If true: throw to monkey "))
+                monkey["test"]["true"] = int(
+                    line.removeprefix("    If true: throw to monkey ")
+                )
             elif line.startswith("    If false: throw to monkey "):
-                monkey["test"]["false"] = int(line.removeprefix("    If false: throw to monkey "))
-            
+                monkey["test"]["false"] = int(
+                    line.removeprefix("    If false: throw to monkey ")
+                )
+
     return values
 
 
-def play(monkeys, rounds = 20, div = 3):
+def play(monkeys, rounds=20, div=3):
     for _ in range(rounds):
         for monkey in monkeys:
             while len(monkey["items"]) > 0:
@@ -41,7 +55,7 @@ def play(monkeys, rounds = 20, div = 3):
                 elif monkey["op"]["type"] == "*":
                     worry_level *= monkey["op"]["number"]
 
-                # divide by 3 and round
+                # divide by div (3 or 1) and round
                 worry_level = int(worry_level / div)
 
                 # check dividability and throw to next monkey
@@ -56,22 +70,30 @@ def play(monkeys, rounds = 20, div = 3):
     return monkeys
 
 
-def solve_part1(fileInfo):
-    values = get_values(fileInfo)
-    monkeys = play(values, 20)
-
+def get_most_active(monkeys, counter=2):
     inspections = []
     for monkey in monkeys:
         inspections.append(monkey["inspected"])
     inspections.sort()
 
     result = 1
-    for item in inspections[-2:]:
+    for item in inspections[-1 * counter :]:
         result *= item
+    
+    return result
+
+
+def solve_part1(fileInfo):
+    values = get_values(fileInfo)
+    monkeys = play(values, 20)
+    result = get_most_active(monkeys)
+
     return result
 
 
 def solve_part2(fileInfo):
     values = get_values(fileInfo)
+    monkeys = play(values, 1000, 1)
+    result = get_most_active(monkeys)
 
-    return 0
+    return result
