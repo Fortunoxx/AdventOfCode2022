@@ -6,7 +6,7 @@ def get_values(fileInfo):
             line = line.replace("\n", "")
             if line.startswith("Monkey "):
                 monkey = {
-                    "id": int(line.split(" ")[1].removesuffix(":")),
+                    "id": int(line.split(" ")[1].replace(":", "")),
                     "inspected": 0,
                 }
                 values.append(monkey)
@@ -14,13 +14,13 @@ def get_values(fileInfo):
                 items = list(
                     map(
                         lambda x: int(x),
-                        line.removeprefix("  Starting items: ").split(", "),
+                        line.replace("  Starting items: ", "").split(", "),
                     )
                 )
                 items.reverse()  # we want to use a stack
                 monkey["items"] = items
             elif line.startswith("  Operation: "):
-                sanitized = line.removeprefix("  Operation: new = old ")
+                sanitized = line.replace("  Operation: new = old ", "")
                 parts = sanitized.split(" ")
                 if sanitized == "* old":
                     monkey["op"] = {"type": "square"}
@@ -28,15 +28,15 @@ def get_values(fileInfo):
                     monkey["op"] = {"type": parts[0], "number": int(parts[1])}
             elif line.startswith("  Test: divisible by "):
                 monkey["test"] = {
-                    "mod": int(line.removeprefix("  Test: divisible by "))
+                    "mod": int(line.replace("  Test: divisible by ", ""))
                 }
             elif line.startswith("    If true: throw to monkey "):
                 monkey["test"]["true"] = int(
-                    line.removeprefix("    If true: throw to monkey ")
+                    line.replace("    If true: throw to monkey ", "")
                 )
             elif line.startswith("    If false: throw to monkey "):
                 monkey["test"]["false"] = int(
-                    line.removeprefix("    If false: throw to monkey ")
+                    line.replace("    If false: throw to monkey ", "")
                 )
 
     return values
