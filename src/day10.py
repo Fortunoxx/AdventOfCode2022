@@ -41,6 +41,39 @@ def get_signal_strength(commands, offset = 20, cycle = 40):
     return results
 
 
+def calc_sprites(commands, sprite = 3, cycle = 40):
+    values = [0]
+    current = 0
+    lines = []
+
+    for cmd in commands:
+        (val, current) = get_signal_values(cmd, current)
+        values += val
+
+    line = []
+    offset = 0
+
+    for idx in range(len(values)):
+        if idx - offset in range(values[idx], values[idx] + sprite):
+            line.append("#")
+        else:
+            line.append(".")
+
+        if (idx + 1) % cycle == 0:
+            lines.append(line)
+            line = []
+            offset += cycle
+
+    return lines
+
+
+def print_sprites(lines):
+    for line in lines:
+        for i in range(len(line)):
+            print(line[i], end = "")
+        print()
+
+
 def solve_part1(fileInfo):
     values = get_values(fileInfo)
     results = get_signal_strength(values)
@@ -50,5 +83,12 @@ def solve_part1(fileInfo):
 
 def solve_part2(fileInfo):
     values = get_values(fileInfo)
+    line_values = calc_sprites(values)
+    print_sprites(line_values)
+    
+    result = ""
+    for line in line_values:
+        for char in line:
+            result += char
 
-    return 0
+    return result
