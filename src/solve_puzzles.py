@@ -11,7 +11,7 @@
 # import day14
 # import day13
 # import day12
-# import day11
+import day11
 import day10
 import day09
 import day08
@@ -27,8 +27,8 @@ sys.path.append('src/puzzle')
 import puzzle
 
 def getFileInfo(day, key="input"):
-    # return {"key": key, "file": f"src/data/day{day}.input.dat"}
-    return {"key": key, "file": f"test/data/day{day}.sample.dat"}
+    return {"key": key, "file": f"src/data/day{day}.input.dat"}
+    # return {"key": key, "file": f"test/data/day{day}.sample.dat"}
 
 # use beautiful colors
 W  = '\033[0m'  # white (normal)
@@ -72,8 +72,8 @@ print(f"{W}Day {O}09{W}: Part {O}1: {G}{day09.solve_part1(getFileInfo('09'))}")
 print(f"{W}Day {O}09{W}: Part {O}2: {G}{day09.solve_part2(getFileInfo('09'))}")
 print(f"{W}Day {O}10{W}: Part {O}1: {G}{day10.solve_part1(getFileInfo('10'))}")
 print(f"{W}Day {O}10{W}: Part {O}2: {G}{day10.solve_part2(getFileInfo('10'))}")
-# print(f"{W}Day {O}11{W}: Part {O}1: {G}{day11.solve_part1(getFileInfo('11'), 100)}")
-# print(f"{W}Day {O}11{W}: Part {O}2: {G}{day11.solve_part2(getFileInfo('11'), 300)}")
+print(f"{W}Day {O}11{W}: Part {O}1: {G}{day11.solve_part1(getFileInfo('11'))}")
+print(f"{W}Day {O}11{W}: Part {O}2: {G}{day11.solve_part2(getFileInfo('11'))}")
 # print(f"{W}Day {O}12{W}: Part {O}1: {G}{day12.solve_part1(getFileInfo('12'))}")
 # print(f"{W}Day {O}12{W}: Part {O}2: {G}{day12.solve_part2(getFileInfo('12'))}")
 # print(f"{W}Day {O}13{W}: Part {O}1: {G}{day13.solve_part1(getFileInfo('13'))}")
