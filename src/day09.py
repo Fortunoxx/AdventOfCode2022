@@ -14,54 +14,70 @@ def calc_pos(pos_h, pos_t, max_distance = 1):
     distX = abs(pos_h["x"] - pos_t["x"])
     distY = abs(pos_h["y"] - pos_t["y"])
 
-    # if too far away: 
-    if distY > max_distance:
-        pos_t["x"] = pos_h["x"]
-        if pos_h["y"] > pos_t["y"]:
-            pos_t["y"] = pos_h["y"] - 1
-        else:
-            pos_t["y"] = pos_h["y"] + 1
+    pos = {"x": pos_t["x"], "y": pos_t["y"]}
 
-    if distX > max_distance:
-        pos_t["y"] = pos_h["y"]
-        if pos_h["x"] > pos_t["x"]:
-            pos_t["x"] = pos_h["x"] - 1
-        else:
-            pos_t["x"] = pos_h["x"] + 1
+    fac_x = 1 if pos_h["x"] > pos_t["x"] else -1
+    fac_y = 1 if pos_h["y"] > pos_t["y"] else -1
 
-    return pos_t
+    if distY > max_distance or distY + distX > 2:
+        pos["y"] = pos["y"] + (1 * fac_y)
+
+    if distX > max_distance or distY + distX > 2:
+        pos["x"] = pos["x"] + (1 * fac_x)
+
+    return pos
 
 
-def move_one(direction, pos_h, pos_t, visited):
-    if direction == "R":
-        pos_h["x"] += 1
-    elif direction == "L":
-        pos_h["x"] -= 1
-    elif direction == "U":
-        pos_h["y"] += 1
-    elif direction == "D":
-        pos_h["y"] -= 1
+def move_one(direction, pos_h, pos_t, visited, has_tail = False, move_part_two_only = False):
+    if not move_part_two_only:
+        if direction == "R":
+            pos_h = {"x": pos_h["x"] + 1, "y": pos_h["y"]}
+        elif direction == "L":
+            pos_h = {"x": pos_h["x"] - 1, "y": pos_h["y"]}
+        elif direction == "U":
+            pos_h = {"x": pos_h["x"], "y": pos_h["y"] + 1}
+        elif direction == "D":
+            pos_h = {"x": pos_h["x"], "y": pos_h["y"] - 1}
 
-    pos_t = calc_pos(pos_h, pos_t)
-    pos = (pos_t["x"], pos_t["y"])
-    if not pos in visited:
+    new_pos = calc_pos(pos_h, pos_t)
+    pos = (new_pos["x"], new_pos["y"])
+    if not pos in visited and has_tail:
         visited.append(pos)
+    return (pos_h, new_pos)
 
 
 def solve_part1(fileInfo):
     directions = get_values(fileInfo)
-    pos_h = {"x": 0, "y": 0}
-    pos_t = {"x": 0, "y": 0}
+
+    positions = [{"x": 0, "y": 0}] * 2
     visited = []
 
     for d in directions:
         for _ in range(d["count"]):
-            move_one(d["direction"], pos_h, pos_t, visited)
+            for idx in range(len(positions)):
+                if idx < len(positions) - 1:
+                    (positions[idx], positions[idx + 1]) = move_one(d["direction"], positions[idx], positions[idx + 1], visited, True)
 
     return len(visited)
 
 
 def solve_part2(fileInfo):
-    values = get_values(fileInfo)
+    directions = get_values(fileInfo)
 
-    return 0
+    positions = [{"x": 0, "y": 0}] * 10
+    visited = []
+
+    for d in directions:
+        for _ in range(d["count"]):
+            for idx in range(len(positions)):
+                has_tail = False
+                move_part_two_only = False
+                if idx < len(positions) - 1:
+                    if idx == len(positions) - 2:
+                        has_tail = True
+                    if idx > 0: 
+                        move_part_two_only = True
+
+                    (positions[idx], positions[idx + 1]) = move_one(d["direction"], positions[idx], positions[idx + 1], visited, has_tail, move_part_two_only)
+
+    return len(visited) # 2555 too low
