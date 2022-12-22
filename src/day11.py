@@ -93,7 +93,7 @@ def solve_part1(fileInfo):
 
 def solve_part2(fileInfo):
     values = get_values(fileInfo)
-    monkeys = play(values, 1000, 1)
+    monkeys = play(values, 20, 1)
     result = get_most_active(monkeys)
 
     return result
