@@ -11,7 +11,7 @@ def get_values(fileInfo):
     return values
 
 
-def get_signal_values(command, current, default_cycle_length = 3):
+def get_signal_values(command, current, default_cycle_length = 2):
     val = []
     (cmd, num) = command
 
@@ -26,7 +26,7 @@ def get_signal_values(command, current, default_cycle_length = 3):
 
 
 def get_signal_strength(commands, offset = 20, cycle = 40):
-    values = []
+    values = [1]
     current = 1
     results = []
 
@@ -35,8 +35,8 @@ def get_signal_strength(commands, offset = 20, cycle = 40):
         values += val
 
     for idx in range(len(values)):
-        if idx % cycle == offset:
-            results.append(idx * values[idx])
+        if (idx + 1) % cycle == offset:
+            results.append((idx + 1) * values[idx])
 
     return results
 
