@@ -3,7 +3,7 @@
 [![Languages](https://img.shields.io/github/languages/top/Fortunoxx/AdventOfCode2022)](https://github.com/Fortunoxx/AdventOfCode2022/)
 [![License](https://img.shields.io/github/license/Fortunoxx/AdventOfCode2022)](https://github.com/Fortunoxx/AdventOfCode2022/blob/main/LICENSE)
 [![Last Commit](https://img.shields.io/github/last-commit/Fortunoxx/AdventOfCode2022)](https://github.com/Fortunoxx/AdventOfCode2022/)
-[![Days Completed](https://img.shields.io/badge/days%20completed-11-orange)](https://adventofcode.com/2022/)
+[![Days Completed](https://img.shields.io/badge/days%20completed-12-orange)](https://adventofcode.com/2022/)
 
 # AdventOfCode2022
 Get started at https://adventofcode.com/2022

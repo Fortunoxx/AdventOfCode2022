@@ -1,8 +1,11 @@
+import copy
+
 def get_values(fileInfo):
     values = {}
     start = ()
     end = ()
     y = 0
+    positions = []
 
     with open(fileInfo["file"]) as file:
         for line in file:
@@ -12,11 +15,13 @@ def get_values(fileInfo):
                 dist = -1
                 if c == "S":
                     start = (x,y)
-                    dist = 0
                     c = "a"
                 elif c == "E":
                     end = (x,y)
                     c = "z"
+
+                if c == "a":
+                    positions.append((x,y)) # for part 2
 
                 val = ord(c) - 96 if ord(c) > 96 else 0
 
@@ -24,7 +29,7 @@ def get_values(fileInfo):
                 x += 1
             y += 1
 
-    return (values, start, end)
+    return (values, start, end, positions)
 
 
 def dijkstra(start, end, unvisited, step=1, max_height=1):
@@ -35,6 +40,7 @@ def dijkstra(start, end, unvisited, step=1, max_height=1):
     directions = [up, down, left, right]
 
     current = unvisited[start]
+    current["dist"] = 0
     key = start
     while len(unvisited) > 0:
         for dir in directions:
@@ -49,16 +55,28 @@ def dijkstra(start, end, unvisited, step=1, max_height=1):
         for idx in unvisited:
             if unvisited[idx]["dist"] > 0 and (unvisited[idx]["dist"] < min_item or min_item == -1):
                 (current, min_item, key) = (unvisited[idx], unvisited[idx]["dist"], idx)
+        if min_item == -1:
+            break # no solution for this start position
 
     return -1 
 
 
 def solve_part1(fileInfo):
-    (values, start, end) = get_values(fileInfo)
+    (values, start, end, _) = get_values(fileInfo)
     steps = dijkstra(start, end, values)
     return steps
 
 
 def solve_part2(fileInfo):
-    values = get_values(fileInfo)
-    return 0
+    (values, _, end, positions) = get_values(fileInfo)
+    
+    best_position = ()
+    min_steps = -1
+
+    for start in positions:
+        steps = dijkstra(start, end, copy.deepcopy(values))
+        if steps > 0 and (steps < min_steps or min_steps == -1):
+            min_steps = steps
+            best_position = start
+
+    return min_steps
