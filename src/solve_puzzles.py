@@ -9,7 +9,7 @@
 # import day16
 # import day15
 # import day14
-# import day13
+import day13
 import day12
 import day11
 import day10
@@ -76,8 +76,8 @@ print(f"{W}Day {O}11{W}: Part {O}1: {G}{day11.solve_part1(getFileInfo('11'))}")
 print(f"{W}Day {O}11{W}: Part {O}2: {G}{day11.solve_part2(getFileInfo('11'))}")
 print(f"{W}Day {O}12{W}: Part {O}1: {G}{day12.solve_part1(getFileInfo('12'))}")
 print(f"{W}Day {O}12{W}: Part {O}2: {G}{day12.solve_part2(getFileInfo('12'))}")
-# print(f"{W}Day {O}13{W}: Part {O}1: {G}{day13.solve_part1(getFileInfo('13'))}")
-# print(f"{W}Day {O}13{W}: Part {O}2: {G}{day13.solve_part2(getFileInfo('13'))}")
+print(f"{W}Day {O}13{W}: Part {O}1: {G}{day13.solve_part1(getFileInfo('13'))}")
+print(f"{W}Day {O}13{W}: Part {O}2: {G}{day13.solve_part2(getFileInfo('13'))}")
 # print(f"{W}Day {O}14{W}: Part {O}1: {G}{day14.solve_part1(getFileInfo('14'))}")
 # print(f"{W}Day {O}14{W}: Part {O}2: {G}{day14.solve_part2(getFileInfo('14'))}")
 # print(f"{W}Day {O}15{W}: Part {O}1: {G}{day15.solve_part1(getFileInfo('15'))}")
