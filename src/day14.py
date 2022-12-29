@@ -47,7 +47,7 @@ def calc_blocks(coordinates):
     return blocks
 
 
-def let_sand_flow(blocks, sand, max_y, start=(500, 0)):
+def let_sand_flow(blocks, sand, max_y, is_part_2=False, start=(500, 0)):
     down = (0, 1)
     left = (-1, 1)
     right = (1, 1)
@@ -55,9 +55,11 @@ def let_sand_flow(blocks, sand, max_y, start=(500, 0)):
 
     while True:
         pos = tuple(map(lambda x, y: x + y, current, down))
-        if pos[1] > max_y:
+        if pos[1] > max_y and not is_part_2:
             current = None
-            break # all sand falls into void from here
+            break  # all sand falls into void from here
+        elif pos[1] >= (max_y + 2) and is_part_2:
+            break
         if pos in blocks or pos in sand:
             pos = tuple(map(lambda x, y: x + y, current, left))
             if pos in blocks or pos in sand:
@@ -66,22 +68,23 @@ def let_sand_flow(blocks, sand, max_y, start=(500, 0)):
                     break
         current = pos
 
+    if current in blocks or current in sand:
+        return None
     return current
 
 
-def apply_sand(blocks):
-    sand = []
-    max_y = max(blocks, key=lambda tup: tup[1])[1]
+def apply_sand_set(blocks, max_y, is_part_2=False):
+    sand_set = set([])
 
     while True:
-        new_block = let_sand_flow(blocks, sand, max_y)
+        new_block = let_sand_flow(blocks, sand_set, max_y, is_part_2)
         if new_block is not None:
-            sand.append(new_block)
-            # visualize_blocks(blocks, sand)
-        else: 
+            sand_set.add(new_block)
+        else:
             break
 
-    return sand
+    # visualize_blocks(blocks, sand_set)
+    return sand_set
 
 
 def visualize_blocks(blocks, sand):
@@ -96,7 +99,14 @@ def visualize_blocks(blocks, sand):
             max_x = b[0]
         if b[1] > max_y:
             max_y = b[1]
-
+    for b in sand:
+        if b[0] < min_x or min_x == -1:
+            min_x = b[0]
+        if b[0] > max_x:
+            max_x = b[0]
+        if b[1] > max_y:
+            max_y = b[1]
+    
     for y in range(max_y + 1):
         line = ""
         for x in range(max_x - min_x + 1):
@@ -109,8 +119,7 @@ def visualize_blocks(blocks, sand):
         print(line)
 
 
-def solve_part1(fileInfo, visualize=False): # activate to see beautiful diagram
-    values = get_values(fileInfo)
+def get_blocks(values):
     blocks = []
 
     for value in values:
@@ -118,18 +127,22 @@ def solve_part1(fileInfo, visualize=False): # activate to see beautiful diagram
         for b in block:
             if not b in blocks:
                 blocks.append(b)
+    return blocks
 
-    if visualize:
-        visualize_blocks(blocks, [])
-    
-    result = apply_sand(blocks)
-    
-    if visualize:
-        visualize_blocks(blocks, result)
-   
+
+def solve_part1(fileInfo):
+    values = get_values(fileInfo)
+    blocks = get_blocks(values)
+    max_y = max(blocks, key=lambda tup: tup[1])[1]
+    result = apply_sand_set(set(blocks), max_y)
+
     return len(result)
 
 
 def solve_part2(fileInfo):
     values = get_values(fileInfo)
-    return 0
+    blocks = get_blocks(values)
+    max_y = max(blocks, key=lambda tup: tup[1])[1]
+    result = apply_sand_set(set(blocks), max_y, True)
+
+    return len(result)
