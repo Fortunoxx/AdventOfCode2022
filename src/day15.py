@@ -36,20 +36,20 @@ def get_values(fileInfo):
 def is_valid(sensors, x, y):
     for (sx, sy, d) in sensors:
         if abs(x - sx) + abs(y - sy) <= d:
-            return False
-    return True
+            return True
+    return False
 
 
 def calc_valid(sensors, beacons, meta, y):
     (x1, x2, _, _) = meta
     valid = 0
     for x in range(x1, x2):
-        if (x, y) not in beacons and not is_valid(sensors, x, y):
+        if (x, y) not in beacons and is_valid(sensors, x, y):
             valid += 1
     return valid
 
 
-def solve_part1(fileInfo, y=20000):
+def solve_part1(fileInfo, y=2000000):
     (sensors, beacons, meta) = get_values(fileInfo)
     return calc_valid(sensors, beacons, meta, y)
 
