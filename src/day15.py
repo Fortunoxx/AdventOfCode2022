@@ -49,11 +49,75 @@ def calc_valid(sensors, beacons, meta, y):
     return valid
 
 
-def solve_part1(fileInfo, y=2000000):
+def check_distress_beacon_position(x, y, sensors, beacons):
+    if (x, y) not in beacons and not is_valid(sensors, x, y):
+        return True
+    return False
+
+
+def check_range(x, y, max_x, max_y):
+    if x > max_x:
+        return False
+    elif x < 0:
+        return False
+    elif y > max_y:
+        return False
+    elif y < 0:
+        return False
+    return True
+
+
+# there is only one possible spot where the beacon can hide, namely on d+1
+def find_distress_beacon(max_x, max_y, sensors, beacons):
+    d1 = (1, 1)
+    d2 = (-1, 1)
+    d3 = (-1, -1)
+    d4 = (1, -1)
+
+    for (sx, sy, d) in sensors:
+        current = (sx, sy - d - 1)  # 12 o'clock over senson
+        # move down right
+        while current[1] <= sy:
+            if not check_range(current[0], current[1], max_x, max_y):
+                current = tuple(map(lambda x, y: x + y, current, d1))
+                continue
+            elif check_distress_beacon_position(current[0], current[1], sensors, beacons):
+                return current
+            current = tuple(map(lambda x, y: x + y, current, d1))
+        # move down left
+        while current[0] >= sx:
+            if not check_range(current[0], current[1], max_x, max_y):
+                current = tuple(map(lambda x, y: x + y, current, d2))
+                continue
+            elif check_distress_beacon_position(current[0], current[1], sensors, beacons):
+                return current
+            current = tuple(map(lambda x, y: x + y, current, d2))
+        # move up left
+        while current[1] >= sy:
+            if not check_range(current[0], current[1], max_x, max_y):
+                current = tuple(map(lambda x, y: x + y, current, d3))
+                continue
+            elif check_distress_beacon_position(current[0], current[1], sensors, beacons):
+                return current
+            current = tuple(map(lambda x, y: x + y, current, d3))
+        # move up right
+        while current[0] <= sx:
+            if not check_range(current[0], current[1], max_x, max_y):
+                current = tuple(map(lambda x, y: x + y, current, d4))
+                continue
+            elif check_distress_beacon_position(current[0], current[1], sensors, beacons):
+                return current
+            current = tuple(map(lambda x, y: x + y, current, d4))
+
+
+def solve_part1(fileInfo, y=int(2e6)):
     (sensors, beacons, meta) = get_values(fileInfo)
     return calc_valid(sensors, beacons, meta, y)
 
 
-def solve_part2(fileInfo):
-    values = get_values(fileInfo)
-    return 0
+def solve_part2(fileInfo, max_x=int(4e6), max_y=int(4e6)):
+    (sensors, beacons, _) = get_values(fileInfo)
+    (x, y) = find_distress_beacon(max_x, max_y, sensors, beacons)
+    result = x * int(4e6) + y
+
+    return result
