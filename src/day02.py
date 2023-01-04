@@ -3,7 +3,7 @@ def get_rules():
     A = {"X": 3, "Y": 6, "Z": 0}
     # paper
     B = {"X": 0, "Y": 3, "Z": 6}
-    #scissors
+    # scissors
     C = {"X": 6, "Y": 0, "Z": 3}
     # rules
     rules = {"A": A, "B": B, "C": C}
@@ -24,12 +24,15 @@ def get_values(fileInfo, is_part_2=False):
                 else:
                     rules = get_rules()
                     value = rules[splitted[0]]
-                    if splitted[1] == "X": # lose
-                        values.append({"p1": splitted[0], "p2": get_item(value, 0)})
-                    if splitted[1] == "Y": # draw
-                        values.append({"p1": splitted[0], "p2": get_item(value, 3)})
-                    if splitted[1] == "Z": # win
-                        values.append({"p1": splitted[0], "p2": get_item(value, 6)})
+                    if splitted[1] == "X":  # lose
+                        values.append(
+                            {"p1": splitted[0], "p2": get_item(value, 0)})
+                    if splitted[1] == "Y":  # draw
+                        values.append(
+                            {"p1": splitted[0], "p2": get_item(value, 3)})
+                    if splitted[1] == "Z":  # win
+                        values.append(
+                            {"p1": splitted[0], "p2": get_item(value, 6)})
 
     return values
 

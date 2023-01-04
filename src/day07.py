@@ -1,5 +1,7 @@
 def get_values(fileInfo):
-    current = {"name": "/", "files": [], "directories": [], "parent": None, "size": 0} # this will be the current working directory
+    # this will be the current working directory
+    current = {"name": "/", "files": [],
+               "directories": [], "parent": None, "size": 0}
     is_first = True
     first = {}
 
@@ -10,12 +12,12 @@ def get_values(fileInfo):
             if is_first:
                 is_first = False
                 first = current
-            
+
     return first
 
 
 def parse_directory(line, current):
-    if line[0:1] == "$": # we have a command
+    if line[0:1] == "$":  # we have a command
         if line[2:4] == "cd":
             dir = line[5:]
 
@@ -23,7 +25,8 @@ def parse_directory(line, current):
                 current = current["parent"]
 
             elif not dir == "/" and not dir in current["directories"]:
-                new = {"name": dir, "files": [], "directories": [], "parent": current, "size": 0}
+                new = {"name": dir, "files": [], "directories": [],
+                       "parent": current, "size": 0}
                 current["directories"].append(new)
                 current = new
     else:
@@ -44,7 +47,7 @@ def calc_sizes(directory_structure):
     return sub
 
 
-def get_directories_by_size(directories, max_size = 100000, result = []):
+def get_directories_by_size(directories, max_size=100000, result=[]):
     for dir in directories["directories"]:
         if dir["size"] <= max_size:
             result.append(dir)
@@ -54,7 +57,7 @@ def get_directories_by_size(directories, max_size = 100000, result = []):
     return result
 
 
-def get_directories_by_min_size(directories, min_size, result = []):
+def get_directories_by_min_size(directories, min_size, result=[]):
     for dir in directories["directories"]:
         if dir["size"] >= min_size:
             result.append(dir)
@@ -64,7 +67,7 @@ def get_directories_by_min_size(directories, min_size, result = []):
     return result
 
 
-def delete_directories_for_update(directories, max_space = 70000000, space_needed = 30000000):
+def delete_directories_for_update(directories, max_space=70000000, space_needed=30000000):
     total_space_used = directories["size"]
     space_left = max_space - total_space_used
     space_to_be_deleted = space_needed - space_left

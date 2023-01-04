@@ -28,7 +28,7 @@ def convert_values(values):
     return ret
 
 
-def get_groups(fileInfo, groupCount = 3):
+def get_groups(fileInfo, groupCount=3):
     counter = 0
     groups = []
     group = []
@@ -38,12 +38,13 @@ def get_groups(fileInfo, groupCount = 3):
             line = line.replace("\n", "")
             group.append(line)
             counter += 1
-            if counter >= groupCount: 
+            if counter >= groupCount:
                 groups.append(group)
                 group = []
                 counter = 0
 
     return groups
+
 
 def get_same_character_in_all_entries(groups):
     first = groups[0]

@@ -5,13 +5,14 @@ def get_values(fileInfo):
         for line in file:
             line = line.replace("\n", "")
             parts = line.split(" ")
-            arg = (parts[0], int(parts[1])) if len(parts) > 1 else (parts[0], None)
-            
+            arg = (parts[0], int(parts[1])) if len(
+                parts) > 1 else (parts[0], None)
+
             values.append(arg)
     return values
 
 
-def get_signal_values(command, current, default_cycle_length = 2):
+def get_signal_values(command, current, default_cycle_length=2):
     val = []
     (cmd, num) = command
 
@@ -25,7 +26,7 @@ def get_signal_values(command, current, default_cycle_length = 2):
     return (val, current)
 
 
-def get_signal_strength(commands, offset = 20, cycle = 40):
+def get_signal_strength(commands, offset=20, cycle=40):
     values = [1]
     current = 1
     results = []
@@ -41,7 +42,7 @@ def get_signal_strength(commands, offset = 20, cycle = 40):
     return results
 
 
-def calc_sprites(commands, sprite = 3, cycle = 40):
+def calc_sprites(commands, sprite=3, cycle=40):
     values = [0]
     current = 0
     lines = []
@@ -70,7 +71,7 @@ def calc_sprites(commands, sprite = 3, cycle = 40):
 def print_sprites(lines):
     for line in lines:
         for i in range(len(line)):
-            print(line[i], end = "")
+            print(line[i], end="")
         print()
 
 
@@ -85,7 +86,7 @@ def solve_part2(fileInfo):
     values = get_values(fileInfo)
     line_values = calc_sprites(values)
     print_sprites(line_values)
-    
+
     result = ""
     for line in line_values:
         for char in line:

@@ -69,14 +69,14 @@ def find_visible_trees(values, x, y):
     return len(results)
 
 
-def count_visibility(value, array, invers = False):
+def count_visibility(value, array, invers=False):
     id = value["id"]
     height = value["height"]
     counter = 0
 
-    if invers: 
+    if invers:
         array.reverse()
-    
+
     for item in array:
         if not invers and item["id"] > id:
             counter += 1
@@ -92,7 +92,7 @@ def count_visibility(value, array, invers = False):
 
 def count_visibility_range(values, x, y):
     max_view = 0
-    max_item = {} # out of curiosity: which item is it?
+    max_item = {}  # out of curiosity: which item is it?
 
     (horizontal, vertical) = calc_horizontal_and_vertical(values, x, y)
 
@@ -109,7 +109,7 @@ def count_visibility_range(values, x, y):
         current_view *= count_visibility(val, h_arr, True)
         current_view *= count_visibility(val, v_arr)
         current_view *= count_visibility(val, v_arr, True)
-        
+
         if current_view > max_view:
             max_view = current_view
             max_item = val

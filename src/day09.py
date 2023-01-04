@@ -9,7 +9,7 @@ def get_values(fileInfo):
     return values
 
 
-def calc_pos(pos_h, pos_t, max_distance = 1):
+def calc_pos(pos_h, pos_t, max_distance=1):
     # calc distance
     distX = abs(pos_h["x"] - pos_t["x"])
     distY = abs(pos_h["y"] - pos_t["y"])
@@ -28,7 +28,7 @@ def calc_pos(pos_h, pos_t, max_distance = 1):
     return pos
 
 
-def move_one(direction, pos_h, pos_t, visited, has_tail = False, move_part_two_only = False):
+def move_one(direction, pos_h, pos_t, visited, has_tail=False, move_part_two_only=False):
     if not move_part_two_only:
         if direction == "R":
             pos_h = {"x": pos_h["x"] + 1, "y": pos_h["y"]}
@@ -56,7 +56,8 @@ def solve_part1(fileInfo):
         for _ in range(d["count"]):
             for idx in range(len(positions)):
                 if idx < len(positions) - 1:
-                    (positions[idx], positions[idx + 1]) = move_one(d["direction"], positions[idx], positions[idx + 1], visited, True)
+                    (positions[idx], positions[idx + 1]) = move_one(d["direction"],
+                                                                    positions[idx], positions[idx + 1], visited, True)
 
     return len(visited)
 
@@ -75,9 +76,10 @@ def solve_part2(fileInfo):
                 if idx < len(positions) - 1:
                     if idx == len(positions) - 2:
                         has_tail = True
-                    if idx > 0: 
+                    if idx > 0:
                         move_part_two_only = True
 
-                    (positions[idx], positions[idx + 1]) = move_one(d["direction"], positions[idx], positions[idx + 1], visited, has_tail, move_part_two_only)
+                    (positions[idx], positions[idx + 1]) = move_one(d["direction"],
+                                                                    positions[idx], positions[idx + 1], visited, has_tail, move_part_two_only)
 
-    return len(visited) # 2555 too low
+    return len(visited)  # 2555 too low

@@ -106,7 +106,7 @@ def visualize_blocks(blocks, sand):
             max_x = b[0]
         if b[1] > max_y:
             max_y = b[1]
-    
+
     for y in range(max_y + 1):
         line = ""
         for x in range(max_x - min_x + 1):

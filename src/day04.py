@@ -35,7 +35,7 @@ def count_overlapping_partly(values):
     for entry in values:
         if (entry["A"]["lower"] <= entry["B"]["lower"] and entry["A"]["upper"] >= entry["B"]["lower"]):
             overlapping += 1
-        elif (entry["B"]["lower"] <= entry["A"]["lower"] and entry["B"]["upper"] >= entry["A"]["lower"]        ):
+        elif (entry["B"]["lower"] <= entry["A"]["lower"] and entry["B"]["upper"] >= entry["A"]["lower"]):
             overlapping += 1
 
     return overlapping

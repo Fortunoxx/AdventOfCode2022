@@ -1,5 +1,6 @@
 import copy
 
+
 def get_values(fileInfo):
     values = {}
     start = ()
@@ -14,14 +15,14 @@ def get_values(fileInfo):
             for c in line:
                 dist = -1
                 if c == "S":
-                    start = (x,y)
+                    start = (x, y)
                     c = "a"
                 elif c == "E":
-                    end = (x,y)
+                    end = (x, y)
                     c = "z"
 
                 if c == "a":
-                    positions.append((x,y)) # for part 2
+                    positions.append((x, y))  # for part 2
 
                 val = ord(c) - 96 if ord(c) > 96 else 0
 
@@ -44,7 +45,7 @@ def dijkstra(start, end, unvisited, step=1, max_height=1):
     key = start
     while len(unvisited) > 0:
         for dir in directions:
-            pos = tuple(map(lambda x, y: x + y, key, dir))            
+            pos = tuple(map(lambda x, y: x + y, key, dir))
             if pos in unvisited and unvisited[pos]["height"] <= (current["height"] + max_height):
                 unvisited[pos]["dist"] = current["dist"] + step
                 if pos == end:
@@ -54,11 +55,12 @@ def dijkstra(start, end, unvisited, step=1, max_height=1):
         min_item = -1
         for idx in unvisited:
             if unvisited[idx]["dist"] > 0 and (unvisited[idx]["dist"] < min_item or min_item == -1):
-                (current, min_item, key) = (unvisited[idx], unvisited[idx]["dist"], idx)
+                (current, min_item, key) = (
+                    unvisited[idx], unvisited[idx]["dist"], idx)
         if min_item == -1:
-            break # no solution for this start position
+            break  # no solution for this start position
 
-    return -1 
+    return -1
 
 
 def solve_part1(fileInfo):
@@ -69,7 +71,7 @@ def solve_part1(fileInfo):
 
 def solve_part2(fileInfo):
     (values, _, end, positions) = get_values(fileInfo)
-    
+
     best_position = ()
     min_steps = -1
 

@@ -10,7 +10,7 @@ def get_values(fileInfo):
 def get_index_of_first_different_packet(line, packet_length=4):
     idx = 0
     while idx + packet_length < len(line):
-        temp = line[idx : idx + packet_length]
+        temp = line[idx: idx + packet_length]
         s = set(temp)
         if len(s) == packet_length:
             break

@@ -1,5 +1,6 @@
 import ast
 
+
 def get_values(fileInfo):
     values = []
 
@@ -66,7 +67,7 @@ def find_correct_order(values):
             # indexes.append((idx, is_valid(values[idx][0], values[idx][1])))
     return indexes
 
-    
+
 def solve_part1(fileInfo):
     values = get_values(fileInfo)
     results = find_correct_order(values)

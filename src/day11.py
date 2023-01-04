@@ -59,9 +59,11 @@ def play(monkeys, rounds=20, part=1, lcm=1):
 
                 # check dividability and throw to next monkey
                 if worry_level % monkey["test"]["mod"] == 0:
-                    monkeys[monkey["test"]["true"]]["items"].insert(0, worry_level)
+                    monkeys[monkey["test"]["true"]
+                            ]["items"].insert(0, worry_level)
                 else:
-                    monkeys[monkey["test"]["false"]]["items"].insert(0, worry_level)
+                    monkeys[monkey["test"]["false"]
+                            ]["items"].insert(0, worry_level)
 
                 # finally, count inspected items
                 monkey["inspected"] += 1
@@ -76,7 +78,7 @@ def get_most_active(monkeys, counter=2):
     inspections.sort()
 
     result = 1
-    for item in inspections[-1 * counter :]:
+    for item in inspections[-1 * counter:]:
         result *= item
 
     return result
